@@ -98,10 +98,6 @@ esp_err_t Wifi::start()
     if(init)
     {
         ESP_LOGI(TAG, "Starting Wifi");      
-        wifi_init_config_t wifi_init_config  = WIFI_INIT_CONFIG_DEFAULT();
-        esp_wifi_init(&wifi_init_config);
-        // ESP_ERROR_CHECK(esp_wifi_init(&wifi_init_config));
-
         if( mode == WIFI_MODE_STA )
         {
             return sta();
@@ -162,11 +158,9 @@ esp_err_t Wifi::sta()
 {
     esp_err_t err;
 
-    esp_netif_config_t netif_config = ESP_NETIF_DEFAULT_WIFI_STA();
-    netif = esp_netif_new(&netif_config);
-    assert(netif);
-    esp_netif_attach_wifi_station(netif);
-    esp_wifi_set_default_wifi_sta_handlers();
+    esp_netif_create_default_wifi_sta();
+    wifi_init_config_t wifi_init_config  = WIFI_INIT_CONFIG_DEFAULT();
+    esp_wifi_init(&wifi_init_config);
     
     ESP_ERROR_CHECK(esp_event_handler_register(WIFI_EVENT,
                                                 ESP_EVENT_ANY_ID,
