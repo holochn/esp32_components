@@ -14,7 +14,6 @@ class MqttClient
     MqttClient(std::string node_name);
     esp_err_t initialize(const std::string host_id, 
                     const uint16_t port,
-                    eventHandleCallback *callback, 
                     const std::string user, 
                     const std::string password,
                     uint16_t keepalive = 60);

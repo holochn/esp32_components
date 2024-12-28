@@ -12,8 +12,7 @@ MqttClient::MqttClient(std::string node_name) :
 }
 
 esp_err_t MqttClient::initialize(std::string host_id, 
-                    const uint16_t port,
-                    eventHandleCallback *callback, 
+                    const uint16_t port, 
                     std::string user, 
                     std::string password,
                     uint16_t keepalive)
@@ -22,19 +21,19 @@ esp_err_t MqttClient::initialize(std::string host_id,
     {
         return ESP_ERR_INVALID_ARG;
     }
-    mqttConfig.host = host_id.c_str();
-    mqttConfig.port = port;
-    mqttConfig.client_id = id.c_str();
-    mqttConfig.lwt_topic = id.c_str();
-    mqttConfig.lwt_msg   = "offline";
-    mqttConfig.keepalive = keepalive;
+    mqttConfig.broker.address.uri = host_id.c_str();
+    mqttConfig.broker.address.port = port;
+    mqttConfig.credentials.client_id = id.c_str();
+    mqttConfig.session.last_will.topic = id.c_str();
+    mqttConfig.session.last_will.msg   = "offline";
+    mqttConfig.session.keepalive = keepalive;
 
-    event_callback = callback;
+    event_callback = mqtt_event_handler_cb;
 
      if( (!user.empty()) && (!password.empty()) )
     {
-        mqttConfig.username = user.c_str();
-        mqttConfig.password = password.c_str();
+        mqttConfig.credentials.username = user.c_str();
+        mqttConfig.credentials.authentication.password = password.c_str();
     }
 
     client = esp_mqtt_client_init(&MqttClient::mqttConfig);
@@ -190,6 +189,6 @@ void MqttClient::mqtt_event_handler(void *handler_args,
                                     int32_t event_id, 
                                     void *event_data)
 {
-    ESP_LOGD(TAG, "Event dispatched from event loop base=%s, event_id=%d", base, event_id);
+    ESP_LOGD(TAG, "Event dispatched from event loop base=%s, event_id=%d", base, (int) event_id);
     MqttClient::event_callback((esp_mqtt_event_handle_t) event_data);
 }
