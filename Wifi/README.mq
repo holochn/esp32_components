@@ -1,0 +1,18 @@
+# Wifi component for esp32
+## prerequisits
+You must use esp idf version 5.2.3
+## Usage
+### Create a instance of class Wifi
+The constructor takes one parameter as integer. this is the number of retries
+in case the connection can not be established.
+    Wifi myWifi = Wifi(5);
+### Initialize the instance
+The initializer method takes basically two parameters: the ssid of the wifi to connect to and the wifi password.
+Both as string.
+    myWifi.initialize("ssid", "password");
+### Start the wifi
+Once the wifi is initialized, you can start it with method connect. The method does not take any parameters.
+    myWifi.connect();
+### Stop the wifi
+To stop the wifi, use the disconnect method.
+    myWifi.disconnect();
