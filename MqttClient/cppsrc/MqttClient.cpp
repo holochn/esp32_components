@@ -174,8 +174,8 @@ esp_err_t MqttClient::mqtt_event_handler_cb(esp_mqtt_event_handle_t event)
         case MQTT_EVENT_DATA:
             ESP_LOGI(TAG, "MQTT_EVENT_DATA");
             
-            printf("TOPIC=%.*s\r\n", event->topic_len, event->topic);
-            printf("DATA=%.*s\r\n", event->data_len, event->data);
+            ESP_LOGI(TAG, "TOPIC=%.*s\r\n", event->topic_len, event->topic);
+            ESP_LOGI(TAG, "DATA=%.*s\r\n", event->data_len, event->data);
             break;
         default:
             break;
