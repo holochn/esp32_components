@@ -13,6 +13,7 @@
 #include "esp_system.h"
 #include "esp_wifi.h"
 #include <esp_wifi_types.h>
+#include "nvs_flash.h"
 
 #define GOT_IPV4_BIT        BIT(0)
 #define GOT_IPV6_BIT        BIT(1)
@@ -28,17 +29,12 @@ typedef enum {
 class Wifi
 {
     public:
-    Wifi(uint8_t retries = 0, wifi_mode_t wifi_mode=WIFI_MODE_STA);
-    esp_err_t initialize(std::string SSID, 
-                         std::string pw, 
-                         wifi_wpa_mode_t wpa_mode=WIFI_WPA_MODE_2);
-    esp_err_t connect();
+    Wifi(std::string SSID, std::string pw, uint8_t retries = 0, wifi_wpa_mode_t wpa_mode=WIFI_WPA_MODE_2);
+    esp_err_t initialize();
     esp_err_t disconnect();
     esp_err_t start();
     esp_err_t stop();
-    static void eventHandlerSta(void* arg, esp_event_base_t event_base,
-                            int32_t event_id, void* event_data);
-    static void eventHandlerAp(void* arg, esp_event_base_t event_base,
+    static void eventHandler(void* arg, esp_event_base_t event_base,
                             int32_t event_id, void* event_data);
     static void on_got_ip(void *arg, esp_event_base_t event_base,
                             int32_t event_id, void *event_data);
@@ -60,9 +56,6 @@ class Wifi
     std::string password;
     esp_event_handler_instance_t instance_any_id;
     esp_event_handler_instance_t instance_got_ip;
-    esp_err_t create_default_event_loop();
-    esp_err_t sta();
-    esp_err_t ap();
 };
 
 #endif // WIFI_HPP
