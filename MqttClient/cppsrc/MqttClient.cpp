@@ -21,8 +21,10 @@ esp_err_t MqttClient::initialize(std::string host_id,
     {
         return ESP_ERR_INVALID_ARG;
     }
-    mqttConfig.broker.address.uri = host_id.c_str();
+    
+    mqttConfig.broker.address.hostname = host_id.c_str();
     mqttConfig.broker.address.port = port;
+    mqttConfig.broker.address.transport = MQTT_TRANSPORT_OVER_TCP;
     mqttConfig.credentials.client_id = id.c_str();
     mqttConfig.session.last_will.topic = id.c_str();
     mqttConfig.session.last_will.msg   = "offline";
