@@ -12,12 +12,7 @@ DHT22::~DHT22() {}
 void DHT22::read()
 {
     uint8_t cnt =0;
-    for (int i = 0; i < 5; ++i)
-    {
-        data[i] = 0;
-    }
     
-
     // start sequence by pulling data_pin to LOW for 1 ms
     gpio_set_direction(m_data_pin, GPIO_MODE_OUTPUT);
     gpio_set_level(m_data_pin, false);
@@ -115,12 +110,6 @@ float DHT22::getHumidity()
 float DHT22::getTemperature()
 {
     float temperature=0;
-    
-    for (int i = 0; i < 5; i++)
-    {
-        printf("%d: %x\n", i, data[i]);
-    }
-
     uint16_t upper = (data[2] & 0x7F);
     upper <<= 8;
     upper |= data[3];
